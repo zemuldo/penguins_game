@@ -6,8 +6,8 @@ class Board extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      width: this.props.width || 10,
-      height: this.props.height || 10,
+      width: this.props.width>100?100:this.props.width || 10,
+      height: this.props.height>100?100:this.props.height || 10,
       selected: {
         width: 0,
         height: 0
@@ -16,7 +16,7 @@ class Board extends Component {
       unchopped: {},
       chopped: {},
       playW: randomNo(0, this.props.width - 1 || 9),
-      playH: randomNo(0, this.props.height - 1 || 9)
+      playH: randomNo(0, this.props.height - 1 || 9),
     }
   }
 
@@ -132,6 +132,8 @@ class Board extends Component {
   }
 
   render() {
+      let minBordW = this.state.width*50
+      let minBordH = this.state.height*50
     let board = this.state.board.map((row, i) => {
       return <div className={'board-row'} key={i}>
         {
@@ -150,7 +152,7 @@ class Board extends Component {
       </div>
     })
     return (
-      <div style={{minWidth:`${this.state.width*50}px`,minHeight:`${this.state.height*50}px`}}>
+      <div >
         <p>{`${Object.keys(this.state.unchopped).length} Penguins to chop`}</p>
         <div className={'board'} onKeyDown={this.playGame}>
           {board}

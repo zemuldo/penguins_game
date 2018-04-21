@@ -18,9 +18,8 @@ class App extends Component {
 
   handleDialogueField = (e)=>{
     this.setState({updatingBoard:true})
-    console.log(e.target.name)
     if (!isNaN(e.target.value)){
-      this.setState({[e.target.name]:e.target.value})
+      this.setState({[e.target.name]:e.target.value>30?30:e.target.value})
     }
     setTimeout(()=>{
       this.setState({updatingBoard:false})
