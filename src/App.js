@@ -16,38 +16,43 @@ class App extends Component {
         height: 0
       },
       board: [],
-      unchopped:{},
+      unchopped: {},
       chopped: {},
-      playW:5,
-      playH:5
+      playW: randomNos(0, this.props.width - 1 || 9),
+      playH: randomNos(0, this.props.height - 1 || 9)
     }
   }
 
   createBordNumbers = () => {
-    return new Promise((resolve, reject) => {
-      let rows = []
-      for (let i = 0; i < this.state.width; i++) {
-        let row = []
-        let playList = {}
-        let toshow = randomNos(0, this.state.width - 1)
-
-        for (let x = 0; x < toshow; x++) { playList[randomNos(0, this.state.width - 1)] = true }
-
-        for (let j = 0; j < this.state.width; j++) {
-          this.setState(prevState => ({
-            unchopped: {
-                ...prevState.unchopped,
-                [`${i}-${j}`]: true
-            }
-        }))
-          row.push({ key: `${i}-${j}`, show: !!playList[j] })
-        }
-        rows.push(row)
+    let playList = {}
+    this.setState(prevState => ({
+      chopped: {
+        ...prevState.chopped,
+        [`${this.state.playW}-${this.state.playH}`]: true
       }
-      resolve(rows)
+    }))
+    return new Promise((resolve, reject) => {
+      for (let x = 0; x < this.state.height; x++) {
+        playList[`${randomNos(0, this.state.width - 1)}-${x}`] = true
+      }
+
+      resolve(playList)
     })
       .then(o => {
+        let rows = []
+        for (let i = 0; i < this.state.width; i++) {
+          let row = []
+
+          for (let j = 0; j < this.state.height; j++) {
+            row.push({ key: `${i}-${j}`, show: !!playList[`${j}-${i}`] })
+          }
+          rows.push(row)
+        }
+        return rows
+      })
+      .then(o => {
         this.setState({ board: o })
+        this.setState({ unchopped: playList })
       })
       .catch(e => {
         console.log(e)
@@ -63,56 +68,63 @@ class App extends Component {
   }
   playGame = (e) => {
     if (e.key === 38 || e.key === 'ArrowUp') {
-      if(this.state.playW===0){
+      if (this.state.playW === 0) {
         return false
       }
-      this.setState({playW:this.state.playW-1})
+      this.setState({ playW: this.state.playW - 1 })
       this.setState(prevState => ({
         chopped: {
-            ...prevState.chopped,
-            [`${this.state.playW}-${this.state.playH}`]: true
+          ...prevState.chopped,
+          [`${this.state.playW}-${this.state.playH}`]: true
         }
-    }))
-    this.setState(prevState => ({
-      unchopped: delete prevState.unchopped[`${this.state.playW}-${this.state.playH}`]
-  }))
-    
+      }))
     } else if (e.key === 40 || e.key === 'ArrowDown') {
-      if(this.state.playW===this.state.width-1){
+      if (this.state.playW === this.state.width - 1) {
         return false
       }
-      this.setState({playW:this.state.playW+1})
+      this.setState({ playW: this.state.playW + 1 })
       this.setState(prevState => ({
         chopped: {
-            ...prevState.chopped,
-            [`${this.state.playW}-${this.state.playH}`]: true
+          ...prevState.chopped,
+          [`${this.state.playW}-${this.state.playH}`]: true
         }
-    }))
+      }))
     }
     else if (e.key === 37 || e.key === 'ArrowLeft') {
-      if(this.state.playH===0){
+      if (this.state.playH === 0) {
         return false
       }
-      this.setState({playH:this.state.playH-1})
+
       this.setState(prevState => ({
         chopped: {
-            ...prevState.chopped,
-            [`${this.state.playW}-${this.state.playH}`]: true
+          ...prevState.chopped,
+          [`${this.state.playW}-${this.state.playH}`]: true
         }
-    }))
+      }))
+      this.setState({ playH: this.state.playH - 1 })
     }
     else if (e.key === 39 || e.key === 'ArrowRight') {
-      if(this.state.playH===this.state.width-1){
+      if (this.state.playH === this.state.height - 1) {
         return false
       }
-      this.setState({playH:this.state.playH+1})
+
       this.setState(prevState => ({
         chopped: {
-            ...prevState.chopped,
-            [`${this.state.playW}-${this.state.playH}`]: true
+          ...prevState.chopped,
+          [`${this.state.playW}-${this.state.playH}`]: true
         }
-    }))
+      }))
+      this.setState({ playH: this.state.playH + 1 })
     }
+
+    if (this.state.unchopped[`${this.state.playW}-${this.state.playH}`]) {
+      let unchopped = this.state.unchopped
+      delete unchopped[`${this.state.playW}-${this.state.playH}`]
+      this.setState({
+        unchopped: unchopped
+      })
+    }
+    
   }
   getRandom = () => {
     randomNos(0, this.state.width)
@@ -131,21 +143,21 @@ class App extends Component {
         {
           row.map((field, i) => {
             return <span className={'bord-box'} >
-              
+
               {
-                field.key ===`${this.state.playW}-${this.state.playH}`?
-                <i className="fa fa-linux" style={{ fontSize: '48px', color: 'red' }}></i>
-                :field.show && !this.state.chopped[field.key] ?
-                <i className="fa fa-linux" style={{ fontSize: '48px', color: 'blue' }}></i>
-                :
-                <i className="fa fa-linux" style={{ fontSize: '48px', color: 'white' }}></i>}</span>
+                field.key === `${this.state.playW}-${this.state.playH}` ?
+                  <i className="fa fa-linux" style={{ fontSize: '48px', color: 'red' }}></i>
+                  : this.state.unchopped[field.key] && field.key !== `${this.state.playW}-${this.state.playH}` && !this.state.chopped[field.key] ?
+                    <i className="fa fa-linux" style={{ fontSize: '48px', color: 'blue' }}></i>
+                    :
+                    <i className="fa fa-linux" style={{ fontSize: '48px', color: 'white' }}></i>}</span>
           })
         }
       </div>
     })
     return (
       <div className="App">
-      <p>{`${Object.keys(this.state.unchopped).length} Penguins to chop today`}</p>
+        <p>{`${Object.keys(this.state.unchopped).length} Penguins to chop today`}</p>
         <div className={'board'} onKeyDown={this.playGame}>
           {board}
         </div>
