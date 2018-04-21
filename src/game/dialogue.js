@@ -34,8 +34,8 @@ class Dialogue extends Component {
                             placeholder='Desired height'
                         />
                         {
-                            !this.state.error?
-                            <p className='error'>{`Please, `}</p>:
+                            this.props.error.mess?
+                            <p className='error'>{this.props.error.mess}</p>:
                             null
                         }
                     </div>
