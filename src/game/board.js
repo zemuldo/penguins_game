@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {randomNo} from '../util'
+import './board.css'
 
 class Board extends Component {
   constructor(props) {
@@ -132,7 +133,7 @@ class Board extends Component {
 
   render() {
     let board = this.state.board.map((row, i) => {
-      return <div key={i}>
+      return <div className={'board-row'} key={i}>
         {
           row.map((field, i) => {
             return <span key={field.key} className={'bord-box'} >
@@ -149,7 +150,7 @@ class Board extends Component {
       </div>
     })
     return (
-      <div className="App">
+      <div style={{minWidth:`${this.state.width*50}px`,minHeight:`${this.state.height*50}px`}}>
         <p>{`${Object.keys(this.state.unchopped).length} Penguins to chop`}</p>
         <div className={'board'} onKeyDown={this.playGame}>
           {board}

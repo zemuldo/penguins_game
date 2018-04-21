@@ -7,8 +7,8 @@ button{
   color: green;
   border-radius: 5%;
   cursor: pointer;
-  width: 100px;
-  height: 30px;
+  min-width: 100px;
+  min-height: 30px;
   font-size: 18px;
   font-weight: bold;
   background-color: white;
