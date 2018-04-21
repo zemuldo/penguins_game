@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-
-function randomNos(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+import {randomNo} from '../util'
 
 class Board extends Component {
   constructor(props) {
@@ -17,8 +14,8 @@ class Board extends Component {
       board: [],
       unchopped: {},
       chopped: {},
-      playW: randomNos(0, this.props.width - 1 || 9),
-      playH: randomNos(0, this.props.height - 1 || 9)
+      playW: randomNo(0, this.props.width - 1 || 9),
+      playH: randomNo(0, this.props.height - 1 || 9)
     }
   }
 
@@ -32,10 +29,10 @@ class Board extends Component {
     }))
     return new Promise((resolve, reject) => {
       for (let x = 0; x < this.state.height; x++) {
-        playList[`${randomNos(0, this.state.width - 1)}-${x}`] = true
+        playList[`${randomNo(0, this.state.width - 1)}-${x}`] = true
       }
       for (let x = 0; x < this.state.width; x++) {
-        playList[`${randomNos(0, this.state.width - 1)}-${x}`] = true
+        playList[`${randomNo(0, this.state.width - 1)}-${x}`] = true
       }
 
       resolve(playList)
@@ -153,7 +150,7 @@ class Board extends Component {
     })
     return (
       <div className="App">
-        <p>{`${Object.keys(this.state.unchopped).length} Penguins to chop today`}</p>
+        <p>{`${Object.keys(this.state.unchopped).length} Penguins to chop`}</p>
         <div className={'board'} onKeyDown={this.playGame}>
           {board}
         </div>
