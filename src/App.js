@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Board from './game/board'
 import Dialogue from './game/dialogue'
+import {toTitleCase} from './util'
 import './App.css';
 
 
@@ -16,19 +17,18 @@ class App extends Component {
   }
 
   handleExpress = () => {
-    this.setState({ allSet: true, width: 8, height: 10 })
+    this.setState({ allSet: true })
   }
 
   handleDialogueField = (e) => {
-
     if (!isNaN(e.target.value)) {
 
-      if (e.target.value > 30) {
-        this.onError({ mess: `Please enter a value less than 30 for ${e.target.name}` })
-
+      if (e.target.value > 20) {
+        this.onError({ mess: `Please enter a not greater than 20 for ${e.target.name}` })
+        return false
       }
       else this.setState({ updatingBoard: true })
-      this.setState({ [e.target.name]: e.target.value > 30 ? 30 : e.target.value })
+      this.setState({ [e.target.name]: e.target.value > 20 ? 20 : e.target.value })
     }
     else {
       this.onError({ mess: `Please enter a number for for ${e.target.name}` })
@@ -42,7 +42,7 @@ class App extends Component {
       this.onError({ mess: `Bad penguins and Good one cant look the same ` })
       return false
     }
-    this.setState({ [e.target.name]: e.target.value > 30 ? 30 : e.target.value })
+    this.setState({ [e.target.name]: e.target.value > 20 ? 20 : e.target.value })
   }
 
   handleReset = () => {
@@ -66,12 +66,21 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1 className="App-title">Red Penguins Chop Blue Penguins Game</h1>
+        <h1 className="App-title">{`${toTitleCase(this.state.badPenguin)} Penguins Chop ${toTitleCase(this.state.goodPenguin)} Penguins Game`}</h1>
         <button onClick={this.changeSettings}>Change Settings</button>{``} <button onClick={this.handleReset}>Reset</button>
         <div >
           {
             !this.state.allSet ?
-              <Dialogue goodPenguin={this.state.goodPenguin} badPenguin={this.state.badPenguin} handlePenguinColors={this.handlePenguinColors} error={this.state.error} onError={this.onError} handleDialogueField={this.handleDialogueField} width={8} height={10} handleExpress={this.handleExpress} />
+              <Dialogue
+                goodPenguin={this.state.goodPenguin}
+                badPenguin={this.state.badPenguin}
+                handlePenguinColors={this.handlePenguinColors}
+                error={this.state.error} onError={this.onError}
+                handleDialogueField={this.handleDialogueField}
+                width={this.state.width || 10}
+                height={this.state.height || 10}
+                handleExpress={this.handleExpress}
+              />
               : null
           }
         </div>

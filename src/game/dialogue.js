@@ -18,7 +18,7 @@ class Dialogue extends Component {
                     <p>Click on express to use the default Board size</p>
                     <div>
                         <span>
-                            {`Width of Bord: `}
+                            {`Height of Bord: `}
                         </span> {` `}
                         <input
                             onChange={this.props.handleDialogueField}
@@ -26,7 +26,9 @@ class Dialogue extends Component {
                             defaultValue={this.props.width} type='text'
                             placeholder='Desired Width'
                         />
-                        {` `}
+                         <span>
+                            {`Width of Bord: `}
+                        </span> {` `}
                         <input
                             onChange={this.props.handleDialogueField}
                             name={'height'}
@@ -70,7 +72,7 @@ class Dialogue extends Component {
                         }
                     </div>
                     <br />
-                    <button>Continue</button>{` `}<button onClick={this.props.handleExpress}>Play</button>
+                    <button onClick={this.props.handleExpress}>Play</button>
                 </div>
             </div>
         );
