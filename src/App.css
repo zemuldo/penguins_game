@@ -5,7 +5,11 @@
 
 .pad i{
   cursor: pointer;
-  
+
+}
+.pad ::selection{
+  background-color: white;
+  color: white;
 }
 
 .zmodal {

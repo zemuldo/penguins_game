@@ -169,6 +169,14 @@ class Board extends Component {
     })
     return (
       <div >
+        <div className='pad' style={{ float: 'left', position: 'absolute', top: '0' }} >
+            <h2>Play Pad</h2>{this.props.store.playW}{this.props.store.playH}
+            <p>Click to move</p>
+            <i onClick={()=>this.handlePlayGame({target:{name:'playH'},key:'ArrowUp'})} className="fa fa-caret-up" style={{ fontSize: '48px', color: `green` }}></i><br />
+            <i onClick={()=>this.handlePlayGame({target:{name:'playW'},key:'ArrowLeft'})} className="fa fa-caret-left" style={{ fontSize: '48px', color: `blue` }}></i><span style={{ color: 'white' }} >{` Play Kit`}</span>
+            <i onClick={()=>this.handlePlayGame({target:{name:'playW'},key:'ArrowRight'})} className="fa fa-caret-right" style={{ fontSize: '48px', color: `blue` }}></i><br />
+            <i onClick={()=>this.handlePlayGame({target:{name:'playH'},key:'ArrowDown'})} className="fa fa-caret-down" style={{ fontSize: '48px', color: `green` }}></i>
+          </div>
         <p>{`${Object.keys(this.state.unchopped).length} Penguins to chop`}</p>
         <div onKeyDown={this.playGame}>
           <div className={'board'}>

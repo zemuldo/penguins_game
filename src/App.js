@@ -82,14 +82,7 @@ class App extends Component {
 
         <br />
         <div >
-          <div className='pad' style={{ float: 'left', position: 'absolute', top: '0' }} >
-            <h2>Play Pad</h2>{this.props.store.playW}{this.props.store.playH}
-            <p>Click to move</p>
-            <i className="fa fa-caret-up" style={{ fontSize: '48px', color: `green` }}></i><br />
-            <i className="fa fa-caret-left" style={{ fontSize: '48px', color: `blue` }}></i><span style={{ color: 'white' }} >{` Play Kit`}</span>
-            <i className="fa fa-caret-right" style={{ fontSize: '48px', color: `blue` }}></i><br />
-            <i className="fa fa-caret-down" style={{ fontSize: '48px', color: `green` }}></i>
-          </div>
+          
           {
             !this.state.allSet ?
               <Dialogue
