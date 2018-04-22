@@ -132,8 +132,6 @@ class Board extends Component {
   }
 
   render() {
-      let minBordW = this.state.width*50
-      let minBordH = this.state.height*50
     let board = this.state.board.map((row, i) => {
       return <div className={'board-row'} key={i}>
         {

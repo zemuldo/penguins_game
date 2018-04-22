@@ -33,10 +33,10 @@ class Dialogue extends Component {
                             defaultValue={this.props.height} type='text'
                             placeholder='Desired height'
                         />
-
-                        <select onChange={this.props.handlePenguinColors} name = 'goodPenguin'>
+                        {` `}
+                        <select value={this.props.gooPenguin} onChange={this.props.handlePenguinColors} name='goodPenguin'>
                             <option value='red'>Red</option>
-                            <option selected value='green'>Green</option>
+                            <option value='green'>Green</option>
                             <option value='orange'>Orange</option>
                             <option value='cyan'>Cyan</option>
                             <option value='black'>Black</option>
@@ -45,8 +45,9 @@ class Dialogue extends Component {
                             <option value='violet'>Violet</option>
                             <option value='blue'>Blue</option>
                         </select>
-                        <select onChange={this.props.handlePenguinColors} name = 'badPenguin'>
-                            <option selected value='red'>Red</option>
+                        {` `}
+                        <select value={this.props.badPenguin} onChange={this.props.handlePenguinColors} name='badPenguin'>
+                            <option value='red'>Red</option>
                             <option value='green'>Green</option>
                             <option value='orange'>Orange</option>
                             <option value='cyan'>Cyan</option>
@@ -62,7 +63,7 @@ class Dialogue extends Component {
                         }
                     </div>
                     <br />
-                    <button>Continue</button>{` `}<button onClick={this.props.handleExpress}>Express</button>
+                    <button>Continue</button>{` `}<button onClick={this.props.handleExpress}>Play</button>
                 </div>
             </div>
         );
