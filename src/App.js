@@ -10,8 +10,8 @@ class App extends Component {
     this.state = {
       updatingBoard: false,
       error: {},
-      goodPenguin:'blue',
-      badPenguin:'red'
+      goodPenguin: 'blue',
+      badPenguin: 'red'
     }
   }
 
@@ -37,9 +37,9 @@ class App extends Component {
       this.setState({ updatingBoard: false })
     }, 100)
   }
-  handlePenguinColors = (e)=>{
-    if(this.state.badPenguin === e.target.value || this.state.goodPenguin === e.target.value) {
-      this.onError({mess:`Bad penguins and Good one cant look the same `})
+  handlePenguinColors = (e) => {
+    if (this.state.badPenguin === e.target.value || this.state.goodPenguin === e.target.value) {
+      this.onError({ mess: `Bad penguins and Good one cant look the same ` })
       return false
     }
     this.setState({ [e.target.name]: e.target.value > 30 ? 30 : e.target.value })
@@ -66,9 +66,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Red Penguins Chop Blue Penguins Game</h1>
-        </header>
+        <h1 className="App-title">Red Penguins Chop Blue Penguins Game</h1>
         <button onClick={this.changeSettings}>Change Settings</button>{``} <button onClick={this.handleReset}>Reset</button>
         <div >
           {

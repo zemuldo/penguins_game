@@ -136,7 +136,7 @@ class Board extends Component {
       return <div className={'board-row'} key={i}>
         {
           row.map((field, i) => {
-            return <span key={field.key} className={'bord-box'} >
+            return <span style={field.key === `${this.state.playW}-${this.state.playH}` ?{border: '2px solid red'}:{border: '2px solid black'}} key={field.key} className={'bord-box'} >
               <span className='board-box-body'>
 
                 {
@@ -155,8 +155,10 @@ class Board extends Component {
     return (
       <div >
         <p>{`${Object.keys(this.state.unchopped).length} Penguins to chop`}</p>
-        <div className={'board'} onKeyDown={this.playGame}>
+        <div onKeyDown={this.playGame}>
+          <div className={'board'}>  
           {board}
+          </div>
         </div>
       </div>
     );
