@@ -79,10 +79,8 @@ class App extends Component {
       <div className="App">
         <h1 className="App-title">{`${toTitleCase(this.state.badPenguin)} Penguins Chop ${toTitleCase(this.state.goodPenguin)} Penguins Game`}</h1>
         <button onClick={this.changeSettings}>Change Settings</button>{``} <button onClick={this.handleReset}>Reset</button>
-
         <br />
         <div >
-          
           {
             !this.state.allSet ?
               <Dialogue
@@ -123,7 +121,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-Board.propTypes = {
-  store: PropTypes.object.isRequired
-}
 export default connect(mapStateToProps, mapDispatchToProps)(App)
