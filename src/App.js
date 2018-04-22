@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import Board from './game/board'
 import Dialogue from './game/dialogue'
-import { toTitleCase } from './util'
+import { toTitleCase, randomNo } from './util'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as StoreActions from './store/actions/store'
 import './App.css';
 
 
@@ -14,6 +18,13 @@ class App extends Component {
       goodPenguin: 'blue',
       badPenguin: 'red'
     }
+  }
+
+  componentDidMount() {
+    this.props.storeActions.updateStore({
+      playW: randomNo(0, this.state.width - 1 || 9),
+      playH: randomNo(0, this.state.height - 1 || 9)
+    })
   }
 
   handleExpress = () => {
@@ -71,8 +82,8 @@ class App extends Component {
 
         <br />
         <div >
-          <div className='pad' style={{ float: 'left', position: 'absolute', left: '100px' }} >
-            <h2>Play Pad</h2>
+          <div className='pad' style={{ float: 'left', position: 'absolute', top: '0' }} >
+            <h2>Play Pad</h2>{this.props.store.playW}{this.props.store.playH}
             <p>Click to move</p>
             <i className="fa fa-caret-up" style={{ fontSize: '48px', color: `green` }}></i><br />
             <i className="fa fa-caret-left" style={{ fontSize: '48px', color: `blue` }}></i><span style={{ color: 'white' }} >{` Play Kit`}</span>
@@ -107,4 +118,19 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    store: state.store
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    storeActions: bindActionCreators(StoreActions, dispatch),
+  }
+}
+
+Board.propTypes = {
+  store: PropTypes.object.isRequired
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App)

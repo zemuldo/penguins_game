@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { randomNo } from '../util'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as StoreActions from '../store/actions/store'
 import './board.css'
 
 class Board extends Component {
@@ -68,62 +72,73 @@ class Board extends Component {
   handlePlayGame = (e) => {
     // Handle Move Up
     if (e.key === 38 || e.key === 'ArrowUp') {
-      if (this.state.playW === 0) {
+      if (this.props.store.playW === 0) {
         return false
       }
       this.setState({ playW: this.state.playW - 1 })
+      this.props.storeActions.updateStore({
+        playW: this.props.store.playW - 1
+      })
       this.setState(prevState => ({
         chopped: {
           ...prevState.chopped,
-          [`${this.state.playW}-${this.state.playH}`]: true
+          [`${this.props.store.playW}-${this.props.store.playH}`]: true
         }
       }))
     }
     // Handle Move Down
     else if (e.key === 40 || e.key === 'ArrowDown') {
-      if (this.state.playW === this.state.width - 1) {
+      if (this.props.store.playW === this.state.width - 1) {
         return false
       }
       this.setState({ playW: this.state.playW + 1 })
+      this.props.storeActions.updateStore({
+        playW: this.props.store.playW + 1
+      })
       this.setState(prevState => ({
         chopped: {
           ...prevState.chopped,
-          [`${this.state.playW}-${this.state.playH}`]: true
+          [`${this.props.store.playW}-${this.props.store.playH}`]: true
         }
       }))
     }
     // Handle Move Left
     else if (e.key === 37 || e.key === 'ArrowLeft') {
-      if (this.state.playH === 0) {
+      if (this.props.store.playH === 0) {
         return false
       }
-
+      this.setState({ playH: this.state.playH - 1 })
+      this.props.storeActions.updateStore({
+        playH: this.props.store.playH - 1
+      })
       this.setState(prevState => ({
         chopped: {
           ...prevState.chopped,
-          [`${this.state.playW}-${this.state.playH}`]: true
+          [`${this.props.store.playW}-${this.props.store.playH}`]: true
         }
       }))
-      this.setState({ playH: this.state.playH - 1 })
+
     }
     // Handle Move Right
     else if (e.key === 39 || e.key === 'ArrowRight') {
-      if (this.state.playH === this.state.height - 1) {
+      if (this.props.store.playH === this.state.height - 1) {
         return false
       }
-
+      this.props.storeActions.updateStore({
+        playH: this.props.store.playH + 1
+      })
       this.setState(prevState => ({
         chopped: {
           ...prevState.chopped,
-          [`${this.state.playW}-${this.state.playH}`]: true
+          [`${this.props.store.playW}-${this.props.store.playH}`]: true
         }
       }))
       this.setState({ playH: this.state.playH + 1 })
     }
 
-    if (this.state.unchopped[`${this.state.playW}-${this.state.playH}`]) {
+    if (this.state.unchopped[`${this.props.store.playW}-${this.props.store.playH}`]) {
       let unchopped = this.state.unchopped
-      delete unchopped[`${this.state.playW}-${this.state.playH}`]
+      delete unchopped[`${this.props.store.playW}-${this.props.store.playH}`]
       this.setState({
         unchopped: unchopped
       })
@@ -136,13 +151,13 @@ class Board extends Component {
       return <div className={'board-row'} key={i}>
         {
           row.map((field, i) => {
-            return <span style={field.key === `${this.state.playW}-${this.state.playH}` ?{border: '2px solid red'}:{border: '2px solid black'}} key={field.key} className={'bord-box'} >
+            return <span style={field.key === `${this.props.store.playW}-${this.props.store.playH}` ? { border: '2px solid red' } : { border: '2px solid black' }} key={field.key} className={'bord-box'} >
               <span className='board-box-body'>
 
                 {
-                  field.key === `${this.state.playW}-${this.state.playH}` ?
+                  field.key === `${this.props.store.playW}-${this.props.store.playH}` ?
                     <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.badPenguin}` }}></i>
-                    : this.state.unchopped[field.key] && field.key !== `${this.state.playW}-${this.state.playH}` && !this.state.chopped[field.key] ?
+                    : this.state.unchopped[field.key] && field.key !== `${this.props.store.playW}-${this.props.store.playH}` && !this.state.chopped[field.key] ?
                       <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.goodPenguin}` }}></i>
                       :
                       <i className="fa fa-linux" style={{ fontSize: '48px', color: 'white' }}></i>}
@@ -156,8 +171,8 @@ class Board extends Component {
       <div >
         <p>{`${Object.keys(this.state.unchopped).length} Penguins to chop`}</p>
         <div onKeyDown={this.playGame}>
-          <div className={'board'}>  
-          {board}
+          <div className={'board'}>
+            {board}
           </div>
         </div>
       </div>
@@ -165,4 +180,19 @@ class Board extends Component {
   }
 }
 
-export default Board;
+const mapStateToProps = (state) => {
+  return {
+    store: state.store
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    storeActions: bindActionCreators(StoreActions, dispatch),
+  }
+}
+
+Board.propTypes = {
+  store: PropTypes.object.isRequired
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Board)
