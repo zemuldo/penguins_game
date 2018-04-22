@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Board from './game/board'
 import Dialogue from './game/dialogue'
 import { toTitleCase, randomNo } from './util'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as StoreActions from './store/actions/store'
@@ -101,7 +100,7 @@ class App extends Component {
           {
             !this.state.updatingBoard ?
               <Board goodPenguin={this.state.goodPenguin} badPenguin={this.state.badPenguin} width={this.state.width} height={this.state.height} /> :
-              <p>Regenerating...</p>
+              <p>Regenerating Board...</p>
           }
         </div>
       </div>
