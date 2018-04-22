@@ -33,10 +33,32 @@ class Dialogue extends Component {
                             defaultValue={this.props.height} type='text'
                             placeholder='Desired height'
                         />
+
+                        <select onChange={this.props.handlePenguinColors} name = 'goodPenguin'>
+                            <option value='red'>Red</option>
+                            <option selected value='green'>Green</option>
+                            <option value='orange'>Orange</option>
+                            <option value='cyan'>Cyan</option>
+                            <option value='black'>Black</option>
+                            <option value='yellow'>Yellow</option>
+                            <option value='pink'>Pink</option>
+                            <option value='violet'>Violet</option>
+                            <option value='blue'>Blue</option>
+                        </select>
+                        <select onChange={this.props.handlePenguinColors} name = 'badPenguin'>
+                            <option selected value='red'>Red</option>
+                            <option value='green'>Green</option>
+                            <option value='orange'>Orange</option>
+                            <option value='cyan'>Cyan</option>
+                            <option value='black'>Black</option>
+                            <option value='yellow'>Yellow</option>
+                            <option value='pink'>Pink</option>
+                            <option value='violet'>Violet</option>
+                        </select>
                         {
-                            this.props.error.mess?
-                            <p className='error'>{this.props.error.mess}</p>:
-                            null
+                            this.props.error.mess ?
+                                <p className='error'>{this.props.error.mess}</p> :
+                                null
                         }
                     </div>
                     <br />

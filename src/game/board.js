@@ -142,9 +142,9 @@ class Board extends Component {
 
               {
                 field.key === `${this.state.playW}-${this.state.playH}` ?
-                  <i className="fa fa-linux" style={{ fontSize: '48px', color: 'red' }}></i>
+                  <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.badPenguin}` }}></i>
                   : this.state.unchopped[field.key] && field.key !== `${this.state.playW}-${this.state.playH}` && !this.state.chopped[field.key] ?
-                    <i className="fa fa-linux" style={{ fontSize: '48px', color: 'blue' }}></i>
+                    <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.goodPenguin}` }}></i>
                     :
                     <i className="fa fa-linux" style={{ fontSize: '48px', color: 'white' }}></i>}</span>
           })

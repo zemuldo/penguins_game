@@ -9,7 +9,9 @@ class App extends Component {
     super(props)
     this.state = {
       updatingBoard: false,
-      error: {}
+      error: {},
+      goodPenguin:'green',
+      badPenguin:'red'
     }
   }
 
@@ -34,6 +36,13 @@ class App extends Component {
     setTimeout(() => {
       this.setState({ updatingBoard: false })
     }, 100)
+  }
+  handlePenguinColors = (e)=>{
+    if(this.state.badPenguin === e.target.value || this.state.goodPenguin === e.target.value) {
+      this.onError({mess:`Bad penguins and Good one cant look the same `})
+      return false
+    }
+    this.setState({ [e.target.name]: e.target.value > 30 ? 30 : e.target.value })
   }
 
   handleReset = () => {
@@ -64,14 +73,14 @@ class App extends Component {
         <div >
           {
             !this.state.allSet ?
-              <Dialogue error={this.state.error} onError={this.onError} handleDialogueField={this.handleDialogueField} width={8} height={10} handleExpress={this.handleExpress} />
+              <Dialogue handlePenguinColors={this.handlePenguinColors} error={this.state.error} onError={this.onError} handleDialogueField={this.handleDialogueField} width={8} height={10} handleExpress={this.handleExpress} />
               : null
           }
         </div>
         <div onKeyDown={this.playGame}>
           {
             !this.state.updatingBoard ?
-              <Board width={this.state.width} height={this.state.height} /> :
+              <Board goodPenguin={this.state.goodPenguin} badPenguin={this.state.badPenguin} width={this.state.width} height={this.state.height} /> :
               <p>Regenerating...</p>
           }
         </div>
