@@ -3,6 +3,11 @@
   text-align: center;
 }
 
+.pad i{
+  cursor: pointer;
+  
+}
+
 .zmodal {
   display: block; /* Hidden by default */
   position: fixed; /* Stay in place */

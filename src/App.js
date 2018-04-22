@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Board from './game/board'
 import Dialogue from './game/dialogue'
-import {toTitleCase} from './util'
+import { toTitleCase } from './util'
 import './App.css';
 
 
@@ -68,7 +68,17 @@ class App extends Component {
       <div className="App">
         <h1 className="App-title">{`${toTitleCase(this.state.badPenguin)} Penguins Chop ${toTitleCase(this.state.goodPenguin)} Penguins Game`}</h1>
         <button onClick={this.changeSettings}>Change Settings</button>{``} <button onClick={this.handleReset}>Reset</button>
+
+        <br />
         <div >
+          <div className='pad' style={{ float: 'left', position: 'absolute', left: '100px' }} >
+            <h2>Play Pad</h2>
+            <p>Click to move</p>
+            <i className="fa fa-caret-up" style={{ fontSize: '48px', color: `green` }}></i><br />
+            <i className="fa fa-caret-left" style={{ fontSize: '48px', color: `blue` }}></i><span style={{ color: 'white' }} >{` Play Kit`}</span>
+            <i className="fa fa-caret-right" style={{ fontSize: '48px', color: `blue` }}></i><br />
+            <i className="fa fa-caret-down" style={{ fontSize: '48px', color: `green` }}></i>
+          </div>
           {
             !this.state.allSet ?
               <Dialogue
@@ -85,6 +95,7 @@ class App extends Component {
           }
         </div>
         <div onKeyDown={this.playGame}>
+
           {
             !this.state.updatingBoard ?
               <Board goodPenguin={this.state.goodPenguin} badPenguin={this.state.badPenguin} width={this.state.width} height={this.state.height} /> :
