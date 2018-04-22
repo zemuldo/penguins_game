@@ -1,6 +1,9 @@
 import {UPDATE_STORE} from '../actions/store'
 
-const store = {}
+const store = {
+  played:0,
+  chopped:0
+}
 
 const varsReducer = (state = store, action) => {
   switch (action.type) {

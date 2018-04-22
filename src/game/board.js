@@ -138,18 +138,41 @@ class Board extends Component {
       this.setState({
         unchopped: unchopped
       })
+      this.props.storeActions.updateStore({
+        chopped: this.props.store.chopped + 1
+      })
     }
 
-    setTimeout(()=>{
+    setTimeout(() => {
       if (this.state.unchopped[`${this.props.store.playW}-${this.props.store.playH}`]) {
         let unchopped = this.state.unchopped
         delete unchopped[`${this.props.store.playW}-${this.props.store.playH}`]
         this.setState({
           unchopped: unchopped
         })
+        this.props.storeActions.updateStore({
+          chopped: this.props.store.chopped + 1
+        })
       }
-    },40)
+    }, 40)
+    setTimeout(() => {
+      this.reinitGame()
+    }, 30)
 
+  }
+
+  reinitGame = () => {
+    if (Object.keys(this.state.unchopped).length === 0) {
+      this.setState({
+        board: [],
+        unchopped: {},
+        chopped: {}
+      })
+      this.props.storeActions.updateStore({
+        played: this.props.store.played + 1
+      })
+      this.createBord()
+    }
   }
 
   render() {
@@ -177,7 +200,8 @@ class Board extends Component {
       <div >
         <div className='pad' style={{ float: 'left', position: 'absolute', top: '0' }} >
           <h2>Play Pad</h2>
-          <p>Click to move</p>
+          <p>Click to move or</p>
+          <p>Use keyboard Arrow keys</p>
           <i onClick={() => this.handlePlayGame({ target: { name: 'playH' }, key: 'ArrowUp' })} className="fa fa-caret-up" style={{ fontSize: '48px', color: `green` }}></i><br />
           <i onClick={() => this.handlePlayGame({ target: { name: 'playW' }, key: 'ArrowLeft' })} className="fa fa-caret-left" style={{ fontSize: '48px', color: `blue` }}></i><span style={{ color: 'white' }} >{` Play Kit Sec`}</span>
           <i onClick={() => this.handlePlayGame({ target: { name: 'playW' }, key: 'ArrowRight' })} className="fa fa-caret-right" style={{ fontSize: '48px', color: `blue` }}></i><br />

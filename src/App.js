@@ -56,6 +56,10 @@ class App extends Component {
   }
 
   handleReset = () => {
+    this.props.storeActions.updateStore({
+      chopped:0,
+      played: 0
+    })
     this.setState({ updatingBoard: true })
     setTimeout(() => {
       this.setState({ updatingBoard: false })
@@ -78,6 +82,17 @@ class App extends Component {
       <div className="App">
         <h1 className="App-title">{`${toTitleCase(this.state.badPenguin)} Penguins Chop ${toTitleCase(this.state.goodPenguin)} Penguins Game`}</h1>
         <button onClick={this.changeSettings}>Change Settings</button>{``} <button onClick={this.handleReset}>Reset</button>
+        {`  `}
+        <span className='green'>
+          Played
+          <sup className='blue'>
+          {` ${this.props.store.played}`}</sup>
+        </span>{` `}
+        <span className='green'>
+          Chopped
+        <sup className='blue'>
+        {` ${this.props.store.chopped}`}</sup>
+        </span>
         <br />
         <div >
           {
