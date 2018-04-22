@@ -176,7 +176,7 @@ class Board extends Component {
     return (
       <div >
         <div className='pad' style={{ float: 'left', position: 'absolute', top: '0' }} >
-          <h2>Play Pad</h2>{this.props.store.playW}{this.props.store.playH}
+          <h2>Play Pad</h2>
           <p>Click to move</p>
           <i onClick={() => this.handlePlayGame({ target: { name: 'playH' }, key: 'ArrowUp' })} className="fa fa-caret-up" style={{ fontSize: '48px', color: `green` }}></i><br />
           <i onClick={() => this.handlePlayGame({ target: { name: 'playW' }, key: 'ArrowLeft' })} className="fa fa-caret-left" style={{ fontSize: '48px', color: `blue` }}></i><span style={{ color: 'white' }} >{` Play Kit Sec`}</span>
