@@ -10,7 +10,7 @@ class App extends Component {
     this.state = {
       updatingBoard: false,
       error: {},
-      goodPenguin:'green',
+      goodPenguin:'blue',
       badPenguin:'red'
     }
   }
@@ -73,7 +73,7 @@ class App extends Component {
         <div >
           {
             !this.state.allSet ?
-              <Dialogue handlePenguinColors={this.handlePenguinColors} error={this.state.error} onError={this.onError} handleDialogueField={this.handleDialogueField} width={8} height={10} handleExpress={this.handleExpress} />
+              <Dialogue goodPenguin={this.state.goodPenguin} badPenguin={this.state.badPenguin} handlePenguinColors={this.handlePenguinColors} error={this.state.error} onError={this.onError} handleDialogueField={this.handleDialogueField} width={8} height={10} handleExpress={this.handleExpress} />
               : null
           }
         </div>
