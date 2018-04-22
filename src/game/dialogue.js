@@ -33,6 +33,10 @@ class Dialogue extends Component {
                             defaultValue={this.props.height} type='text'
                             placeholder='Desired height'
                         />
+                        <br/><br/>
+                        <span>
+                            {`Good Penguin: `}
+                        </span> {` `}
                         {` `}
                         <select value={this.props.gooPenguin} onChange={this.props.handlePenguinColors} name='goodPenguin'>
                             <option value='red'>Red</option>
@@ -46,6 +50,9 @@ class Dialogue extends Component {
                             <option value='blue'>Blue</option>
                         </select>
                         {` `}
+                        <span>
+                            {`Bad Penguin: `}
+                        </span> {` `}
                         <select value={this.props.badPenguin} onChange={this.props.handlePenguinColors} name='badPenguin'>
                             <option value='red'>Red</option>
                             <option value='green'>Green</option>

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import {randomNo} from '../util'
+import { randomNo } from '../util'
 import './board.css'
 
 class Board extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      width: this.props.width>100?100:this.props.width || 10,
-      height: this.props.height>100?100:this.props.height || 10,
+      width: this.props.width > 100 ? 100 : this.props.width || 10,
+      height: this.props.height > 100 ? 100 : this.props.height || 10,
       selected: {
         width: 0,
         height: 0
@@ -137,14 +137,17 @@ class Board extends Component {
         {
           row.map((field, i) => {
             return <span key={field.key} className={'bord-box'} >
+              <span className='board-box-body'>
 
-              {
-                field.key === `${this.state.playW}-${this.state.playH}` ?
-                  <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.badPenguin}` }}></i>
-                  : this.state.unchopped[field.key] && field.key !== `${this.state.playW}-${this.state.playH}` && !this.state.chopped[field.key] ?
-                    <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.goodPenguin}` }}></i>
-                    :
-                    <i className="fa fa-linux" style={{ fontSize: '48px', color: 'white' }}></i>}</span>
+                {
+                  field.key === `${this.state.playW}-${this.state.playH}` ?
+                    <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.badPenguin}` }}></i>
+                    : this.state.unchopped[field.key] && field.key !== `${this.state.playW}-${this.state.playH}` && !this.state.chopped[field.key] ?
+                      <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.goodPenguin}` }}></i>
+                      :
+                      <i className="fa fa-linux" style={{ fontSize: '48px', color: 'white' }}></i>}
+              </span>
+            </span>
           })
         }
       </div>
