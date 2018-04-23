@@ -1,4 +1,3 @@
-'use strict';
 let path = require('path');
 const express = require('express');
 const logger = require('./tools/logger');
