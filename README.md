@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/zemuldo/reactjs_hackerbay.svg?branch=master)](https://travis-ci.org/zemuldo/reactjs_hackerbay)
+
 # reactjs_hackerbay
 
 This is a simple Bad penguin eat good penguins game. Build using npm run buld then Run the application using npm start.
