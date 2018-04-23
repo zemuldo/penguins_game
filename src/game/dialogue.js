@@ -15,10 +15,10 @@ class Dialogue extends Component {
                     <h2>Welcome to Red penguins chop Blue Penguins.</h2>
 
                     <h3>Please enter a desired size of your play board</h3>
-                    <p>Click on express to use the default Board size</p>
+                    <p>Click on play to use the default Board size</p>
                     <div>
                         <span>
-                            {`Height of Bord: `}
+                            {`Height of Board: `}
                         </span> {` `}
                         <input
                             onChange={this.props.handleDialogueField}
@@ -27,7 +27,7 @@ class Dialogue extends Component {
                             placeholder='Desired Width'
                         />
                          <span>
-                            {`Width of Bord: `}
+                            {`Width of Board: `}
                         </span> {` `}
                         <input
                             onChange={this.props.handleDialogueField}
