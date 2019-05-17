@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as StoreActions from '../store/actions/store'
 import './board.css'
+import { S_IFMT } from 'constants';
 
 class Board extends Component {
   constructor(props) {
@@ -25,6 +26,21 @@ class Board extends Component {
   }
 
   createBord = () => {
+    const evil = [randomNo(0, this.state.width - 1), randomNo(0, this.state.width - 1)]
+    setInterval(()=>{
+      
+      if(this.state.evil){
+        const newUnchopped = this.state.unchopped
+        delete newUnchopped[this.state.evil]
+        this.setState({unchopped: newUnchopped, evil:null })
+      } 
+      else {
+        const newEvil = [randomNo(0, this.state.width - 1), randomNo(0, this.state.width - 1)]
+        this.setState({evil: `${newEvil[0]}-${newEvil[1]}`})
+        this.setState({unchopped: {...this.state.unchopped, [`${newEvil[0]}-${newEvil[1]}`]: true} })
+      }
+    }, randomNo(5, this.props.width - 1 || 9)*1000)
+    this.setState({evil: `${evil[0]}-${evil[1]}`})
     let playList = {}
     this.setState(prevState => ({
       chopped: {
@@ -44,11 +60,13 @@ class Board extends Component {
     })
       .then(o => {
         let rows = []
+
         for (let i = 0; i < this.state.width; i++) {
           let row = []
 
           for (let j = 0; j < this.state.height; j++) {
-            row.push({ key: `${i}-${j}`, show: !!playList[`${j}-${i}`] })
+            if (i === evil[0] && j === evil[1]) row.push({ key: `${i}-${j}`, show: !!playList[`${j}-${i}`], evil: true })
+            else row.push({ key: `${i}-${j}`, show: !!playList[`${j}-${i}`] })
           }
           rows.push(row)
         }
@@ -56,7 +74,7 @@ class Board extends Component {
       })
       .then(o => {
         this.setState({ board: o })
-        this.setState({ unchopped: playList })
+        this.setState({ unchopped: { ...playList, [`${evil[0]}-${evil[1]}`]: true } })
       })
       .catch(e => {
       })
@@ -69,7 +87,12 @@ class Board extends Component {
   componentWillUnmount() {
     document.removeEventListener("keydown", this.handlePlayGame, false);
   }
+  addScore = (position)=>{
+    if(this.state.evil===position) return 100
+    else return 1
+  }
   handlePlayGame = (e) => {
+    const position = `${this.props.store.playW}-${this.props.store.playH}`
     // Handle Move Up
     if (e.key === 38 || e.key === 'ArrowUp') {
       if (this.props.store.playW === 0) {
@@ -132,7 +155,7 @@ class Board extends Component {
       }))
     }
 
-    if (this.state.unchopped[`${this.props.store.playW}-${this.props.store.playH}`]) {
+    if (this.state.unchopped[`${this.props.store.playW}-${this.props.store.playH}`] || position === this.state.evil) {
       let unchopped = this.state.unchopped
       delete unchopped[`${this.props.store.playW}-${this.props.store.playH}`]
       this.setState({
@@ -141,6 +164,13 @@ class Board extends Component {
       this.props.storeActions.updateStore({
         chopped: this.props.store.chopped + 1
       })
+
+      if(position === this.state.evil) {
+        this.props.storeActions.updateStore({
+          chopped: this.props.store.chopped + 100
+        })
+        this.setState({evil: null})
+      }
     }
 
     setTimeout(() => {
@@ -184,12 +214,13 @@ class Board extends Component {
               <span className='board-box-body'>
 
                 {
-                  field.key === `${this.props.store.playW}-${this.props.store.playH}` ?
-                    <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.badPenguin}` }}></i>
-                    : this.state.unchopped[field.key] && field.key !== `${this.props.store.playW}-${this.props.store.playH}` && !this.state.chopped[field.key] ?
-                      <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.goodPenguin}` }}></i>
-                      :
-                      <i className="fa fa-linux" style={{ fontSize: '48px', color: 'white' }}></i>}
+                  field.key !== `${this.props.store.playW}-${this.props.store.playH}` && this.state.evil === field.key ? <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.badPenguin}` }}></i> :
+                    field.key === `${this.props.store.playW}-${this.props.store.playH}` ?
+                      <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.badPenguin}` }}></i>
+                      : this.state.unchopped[field.key] && field.key !== `${this.props.store.playW}-${this.props.store.playH}` && !this.state.chopped[field.key] ?
+                        <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.goodPenguin}` }}></i>
+                        :
+                        <i className="fa fa-linux" style={{ fontSize: '48px', color: 'white' }}></i>}
               </span>
             </span>
           })
