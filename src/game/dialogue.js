@@ -46,7 +46,6 @@ class Dialogue extends Component {
                             <option value='orange'>Orange</option>
                             <option value='cyan'>Cyan</option>
                             <option value='black'>Black</option>
-                            <option value='yellow'>Yellow</option>
                             <option value='pink'>Pink</option>
                             <option value='violet'>Violet</option>
                             <option value='blue'>Blue</option>
@@ -61,7 +60,6 @@ class Dialogue extends Component {
                             <option value='orange'>Orange</option>
                             <option value='cyan'>Cyan</option>
                             <option value='black'>Black</option>
-                            <option value='yellow'>Yellow</option>
                             <option value='pink'>Pink</option>
                             <option value='violet'>Violet</option>
                         </select>

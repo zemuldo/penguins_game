@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as StoreActions from '../store/actions/store'
 import './board.css'
-import { S_IFMT } from 'constants';
 
 class Board extends Component {
   constructor(props) {
@@ -25,9 +24,8 @@ class Board extends Component {
     }
   }
 
-  createBord = () => {
-    const evil = [randomNo(0, this.state.width - 1), randomNo(0, this.state.width - 1)]
-    setInterval(()=>{
+  evilPenguin = ()=>{
+    return setInterval(()=>{
       
       if(this.state.evil){
         const newUnchopped = this.state.unchopped
@@ -40,6 +38,11 @@ class Board extends Component {
         this.setState({unchopped: {...this.state.unchopped, [`${newEvil[0]}-${newEvil[1]}`]: true} })
       }
     }, randomNo(5, this.props.width - 1 || 9)*1000)
+  }
+
+  createBord = () => {
+    const evil = [randomNo(0, this.state.width - 1), randomNo(0, this.state.width - 1)]
+    this.runEvilPenguin =  this.evilPenguin()
     this.setState({evil: `${evil[0]}-${evil[1]}`})
     let playList = {}
     this.setState(prevState => ({
@@ -92,19 +95,20 @@ class Board extends Component {
     else return 1
   }
   handlePlayGame = (e) => {
-    const position = `${this.props.store.playW}-${this.props.store.playH}`
+    let position;
     // Handle Move Up
     if (e.key === 38 || e.key === 'ArrowUp') {
       if (this.props.store.playW === 0) {
         return false
       }
+      position = `${this.props.store.playW-1}-${this.props.store.playH}`
       this.props.storeActions.updateStore({
         playW: this.props.store.playW - 1
       })
       this.setState(prevState => ({
         chopped: {
           ...prevState.chopped,
-          [`${this.props.store.playW}-${this.props.store.playH}`]: true
+          [position]: true
         }
       }))
     }
@@ -113,13 +117,14 @@ class Board extends Component {
       if (this.props.store.playW === this.state.width - 1) {
         return false
       }
+      position = `${this.props.store.playW+1}-${this.props.store.playH}`
       this.props.storeActions.updateStore({
         playW: this.props.store.playW + 1
       })
       this.setState(prevState => ({
         chopped: {
           ...prevState.chopped,
-          [`${this.props.store.playW}-${this.props.store.playH}`]: true
+          [position]: true
         }
       }))
     }
@@ -128,13 +133,14 @@ class Board extends Component {
       if (this.props.store.playH === 0) {
         return false
       }
+      position = `${this.props.store.playW}-${this.props.store.playH-1}`
       this.props.storeActions.updateStore({
         playH: this.props.store.playH - 1
       })
       this.setState(prevState => ({
         chopped: {
           ...prevState.chopped,
-          [`${this.props.store.playW}-${this.props.store.playH}`]: true
+          [position]: true
         }
       }))
 
@@ -144,20 +150,21 @@ class Board extends Component {
       if (this.props.store.playH === this.state.height - 1) {
         return false
       }
+      position = `${this.props.store.playW}-${this.props.store.playH+1}`
       this.props.storeActions.updateStore({
         playH: this.props.store.playH + 1
       })
       this.setState(prevState => ({
         chopped: {
           ...prevState.chopped,
-          [`${this.props.store.playW}-${this.props.store.playH}`]: true
+          [position]: true
         }
       }))
     }
-
-    if (this.state.unchopped[`${this.props.store.playW}-${this.props.store.playH}`] || position === this.state.evil) {
+    if (this.state.unchopped[position] || position === this.state.evil) {
+      
       let unchopped = this.state.unchopped
-      delete unchopped[`${this.props.store.playW}-${this.props.store.playH}`]
+      delete unchopped[position]
       this.setState({
         unchopped: unchopped
       })
@@ -172,11 +179,17 @@ class Board extends Component {
         this.setState({evil: null})
       }
     }
+    this.runUpdateBoard = this.updateBoard(position)
+    this.runReinitGame = this.reinitGame()
+    
 
-    setTimeout(() => {
-      if (this.state.unchopped[`${this.props.store.playW}-${this.props.store.playH}`]) {
+  }
+
+  updateBoard = (position)=>{
+    return setTimeout(() => {
+      if (this.state.unchopped[position]) {
         let unchopped = this.state.unchopped
-        delete unchopped[`${this.props.store.playW}-${this.props.store.playH}`]
+        delete unchopped[position]
         this.setState({
           unchopped: unchopped
         })
@@ -185,13 +198,22 @@ class Board extends Component {
         })
       }
     }, 40)
-    setTimeout(() => {
+  }
+
+  reinitGame = ()=>{
+    return setTimeout(() => {
       this.reinitGame()
     }, 30)
+  }
 
+  componentWillMount(){
+    clearInterval(this.runEvilPenguin)
+    clearTimeout(this.runUpdateBoard)
+    clearTimeout(this.runReinitGame)
   }
 
   reinitGame = () => {
+    clearInterval(this.runEvilPenguin)
     if (Object.keys(this.state.unchopped).length === 0) {
       this.setState({
         board: [],
@@ -206,18 +228,19 @@ class Board extends Component {
   }
 
   render() {
+    const position = `${this.props.store.playW}-${this.props.store.playH}`
     let board = this.state.board.map((row, i) => {
       return <div className={'board-row'} key={i}>
         {
           row.map((field, i) => {
-            return <span style={field.key === `${this.props.store.playW}-${this.props.store.playH}` ? { border: '2px solid red' } : { border: '2px solid black' }} key={field.key} className={'bord-box'} >
+            return <span style={field.key === position ? { border: '2px solid red' } : { border: '2px solid black' }} key={field.key} className={'bord-box'} >
               <span className='board-box-body'>
 
                 {
-                  field.key !== `${this.props.store.playW}-${this.props.store.playH}` && this.state.evil === field.key ? <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.badPenguin}` }}></i> :
-                    field.key === `${this.props.store.playW}-${this.props.store.playH}` ?
+                  field.key !== position && this.state.evil === field.key ? <i className="fa fa-linux" style={{ fontSize: '48px', color: 'yellow' }}></i> :
+                    field.key === position ?
                       <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.badPenguin}` }}></i>
-                      : this.state.unchopped[field.key] && field.key !== `${this.props.store.playW}-${this.props.store.playH}` && !this.state.chopped[field.key] ?
+                      : this.state.unchopped[field.key] && field.key !== position && !this.state.chopped[field.key] ?
                         <i className="fa fa-linux" style={{ fontSize: '48px', color: `${this.props.goodPenguin}` }}></i>
                         :
                         <i className="fa fa-linux" style={{ fontSize: '48px', color: 'white' }}></i>}
